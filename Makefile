@@ -8,8 +8,9 @@ test:
 clean:
 	mvn clean
 push:
+	mvn clean
 	git add .
 	git commit -m "update"
 	git push -u origin main
 
-.PHONY: run clean test
+.PHONY: run clean test push

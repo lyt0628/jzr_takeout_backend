@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="icu.lyt0628.jzr_takeout.repo.mapper.IDishMapper">
+
+    <insert id="addDish">
+        INSERT INTO jzr_takeout.t_dish
+            (shop_id, dish_name, price, created_at, updated_at, status)
+        VALUES
+            (#{shopId}, #{dishName}, #{price},#{createdAt}, #{updatedAt}, #{status})
+    </insert>
+    <update id="updateDish">
+        UPDATE jzr_takeout.t_dish
+        <set>
+            <if test="price != null">price=#{price},</if>
+            <if test="updatedAt != null">updated_at=#{updatedAt},</if>
+            <if test="status != null">status=#{status},</if>
+        </set>
+        WHERE shop_id=#{shopId} AND dish_name=#{dishName}
+    </update>
+    <select id="findDishesByStatus" resultType="icu.lyt0628.jzr_takeout.service.domain.impl.Dish">
+        SELECT shop_id, dish_name, price, created_at, updated_at, status
+        FROM jzr_takeout.t_dish
+        WHERE status=#{status};
+    </select>
+
+<!--    <update id="updateConsumer">-->
+<!--        UPDATE jzr_takeout.t_consumer-->
+<!--        <set>-->
+<!--            <if test="username != null">username=#{username},</if>-->
+<!--            <if test="pwd != null">pwd=#{pwd},</if>-->
+<!--            <if test="createdAt != null">created_at=#{createdAt},</if>-->
+<!--            <if test="updatedAt != null">updated_at=#{updatedAt},</if>-->
+<!--            <if test="status != null">status=#{status},</if>-->
+<!--        </set>-->
+<!--        WHERE id=#{id};-->
+<!--    </update>-->
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="icu.lyt0628.jzr_takeout.repo.mapper.IOrderDetailMapper">
+
+    <insert id="addOrderDetail"
+            parameterMap="OrderDetailParamMap"
+            parameterType="icu.lyt0628.jzr_takeout.service.domain.impl.OrderDetail">
+        INSERT INTO jzr_takeout.t_order_detail
+        (order_id, status, created_at, updated_at, user_pay_time, shop_catch_time, driver_catch_time, user_confirm_time, driver_confirm_time, driver_id)
+        VALUES (#{orderId}, #{status}, #{createdAt}, #{updatedAt}, #{userPayTime}, #{shopCatchTime}, #{driverCatchTime}, #{userConfirmTime}, #{driverConfirmTime}, #{driverId});
+    </insert>
+
+    <parameterMap id="OrderDetailParamMap"
+                  type="icu.lyt0628.jzr_takeout.service.domain.impl.OrderDetail">
+        <parameter property="orderId" />
+        <parameter property="status"
+                javaType="icu.lyt0628.jzr_takeout.service.domain.OrderStatus"
+                typeHandler="icu.lyt0628.jzr_takeout.repo.mapper.util.OrderStatusTypeHandler"/>
+        <parameter property="userPayTime" />
+        <parameter property="shopCatchTime" />
+        <parameter property="driverCatchTime"/>
+        <parameter property="driverConfirmTime" />
+        <parameter property="userConfirmTime"/>
+        <parameter property="createdAt" />
+        <parameter property="updatedAt" />
+    </parameterMap>
+
+</mapper>

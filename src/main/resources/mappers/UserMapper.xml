@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="icu.lyt0628.jzr_takeout.repo.mapper.IUserMapper">
+
+    <insert id="addUser">
+        insert into jzr_takeout.t_user
+            (phone, username, pwd, created_at, updated_at,  status, type)
+        VALUES
+            (#{phone}, #{username}, #{pwd}, #{createdAt}, #{updatedAt}, #{status}, #{type})
+    </insert>
+
+    <select id="findConsumer" resultType="icu.lyt0628.jzr_takeout.service.domain.impl.Consumer">
+        SELECT id, phone, created_at, updated_at, pwd, username, status, type
+        FROM jzr_takeout.t_user
+        WHERE id=#{id};
+    </select>
+
+    <update id="updateConsumer">
+        UPDATE jzr_takeout.t_user
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="pwd != null">pwd=#{pwd},</if>
+            <if test="createdAt != null">created_at=#{createdAt},</if>
+            <if test="updatedAt != null">updated_at=#{updatedAt},</if>
+            <if test="status != null">status=#{status},</if>
+        </set>
+        WHERE id=#{id};
+    </update>
+</mapper>

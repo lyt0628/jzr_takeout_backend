@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="icu.lyt0628.jzr_takeout.repo.mapper.IOrderMapper">
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO jzr_takeout.t_order
+            (consumer_id, shop_id, dish_name, price)
+        VALUES
+            (#{consumerId}, #{shopId}, #{dishName},#{price})
+    </insert>
+
+    <select id="findOrdersByStatus"
+            resultMap="OrderResultMap">
+        SELECT o.id, o.consumer_id, o.shop_id, o.dish_name, o.price,
+        od.order_id, od.status, od.created_at, od.updated_at, od.user_pay_time, od.shop_catch_time, od.driver_catch_time, od.user_confirm_time, od.driver_confirm_time, od.driver_id
+        FROM jzr_takeout.t_order o
+        LEFT JOIN jzr_takeout.t_order_detail od ON o.id = od.order_id
+        WHERE od.status = #{status}
+    </select>
+
+
+
+    <!-- Result Map for OrderDetail -->
+    <resultMap id="OrderDetailResultMap"
+               type="icu.lyt0628.jzr_takeout.service.domain.impl.OrderDetail">
+        <id property="orderId" column="order_id"/>
+        <result property="status" column="status"
+                javaType="icu.lyt0628.jzr_takeout.service.domain.OrderStatus"
+                typeHandler="icu.lyt0628.jzr_takeout.repo.mapper.util.OrderStatusTypeHandler"/>
+        <result property="userPayTime" column="user_pay_time"/>
+        <result property="shopCatchTime" column="shop_catch_time"/>
+        <result property="driverCatchTime" column="driver_catch_time"/>
+        <result property="driverConfirmTime" column="driver_confirm_time"/>
+        <result property="userConfirmTime" column="user_confirm_time"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- Result Map for Order -->
+    <resultMap id="OrderResultMap" type="icu.lyt0628.jzr_takeout.service.domain.impl.Order">
+        <id property="id" column="id"/>
+        <result property="consumerId" column="consumer_id"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="dishName" column="dish_name"/>
+        <result property="price" column="price"/>
+        <association property="detail" javaType="icu.lyt0628.jzr_takeout.service.domain.impl.OrderDetail" resultMap="OrderDetailResultMap"/>
+    </resultMap>
+</mapper>
